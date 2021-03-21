@@ -1,14 +1,16 @@
 package guru.springframework.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
+@Data
+@EqualsAndHashCode(exclude = "recipe")
 @Entity
-@Getter
-@Setter
 public class Note {
 
     @Id

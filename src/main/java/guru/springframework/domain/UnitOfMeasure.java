@@ -1,16 +1,12 @@
 package guru.springframework.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Data
+@EqualsAndHashCode(exclude = "ingredient")
 @Entity
-@Getter
-@Setter
 public class UnitOfMeasure {
 
     @Id
@@ -18,4 +14,7 @@ public class UnitOfMeasure {
     private Long id;
 
     private String description;
+
+    @OneToOne
+    private Ingredient ingredient;
 }
