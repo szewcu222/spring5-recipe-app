@@ -16,26 +16,25 @@ import java.util.*;
 public class RecipeServiceImpl implements RecipeService{
 
     private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
+//    private final IngredientRepository ingredientRepository;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
     public Set<Recipe> getRecipes() {
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
-        Recipe recipe = recipes.stream().findFirst().get();
-        Set<Ingredient> ingredients = ingredientRepository.findIngredientsByRecipe_Id(recipe.getId());
+        // Recipe recipe = recipes.stream().findFirst().get();
+        // Set<Ingredient> ingredients = ingredientRepository.findIngredientsByRecipe_Id(recipe.getId());
 
         Set<Recipe> recByDiffAndCookTime = recipeRepository.findRecipesByDifficultyOrCookTime(Difficulty.EASY, 0);
 
-        Set<Recipe> recByIngredients = recipeRepository.findRecipesByIngredients(ingredients);
+        // Set<Recipe> recByIngredients = recipeRepository.findRecipesByIngredients(ingredients);
 
         System.out.println("findRecipeByNoteIn");
-        Recipe recByNoteId = recipeRepository.findRecipeByNoteIn(Collections.singletonList(recipe.getNote()));
+        // Recipe recByNoteId = recipeRepository.findRecipeByNoteIn(Collections.singletonList(recipe.getNote()));
 
         Set<Recipe> allByCategoriesId = recipeRepository.findByCategoriesId(1L);
 
