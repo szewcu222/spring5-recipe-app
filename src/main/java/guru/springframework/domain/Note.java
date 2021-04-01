@@ -1,14 +1,15 @@
 package guru.springframework.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
-@Data
+//@Data
+@Getter
+@Setter
+@NoArgsConstructor
+//@RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "recipe")
 @Entity
 public class Note {

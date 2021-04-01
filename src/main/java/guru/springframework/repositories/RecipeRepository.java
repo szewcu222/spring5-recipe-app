@@ -4,12 +4,14 @@ import guru.springframework.domain.*;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 
 
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
 //    Set<Recipe> findByCategories(Long categories_id);
+    Optional<Recipe> findRecipeById(Long id);
     Set<Recipe> findRecipesByDifficultyOrCookTime(Difficulty difficulty, Integer cookTime);
     Set<Recipe> findRecipesByIngredients(Set<Ingredient> ingredients);
     Set<Recipe> findRecipesByIngredientsId(Long ingredients_id);

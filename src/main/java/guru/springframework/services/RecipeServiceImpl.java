@@ -41,4 +41,9 @@ public class RecipeServiceImpl implements RecipeService{
         Set<Recipe> allByIgredientId = recipeRepository.findRecipesByIngredientsId(1L);
         return recipes;
     }
+
+    @Override
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findRecipeById(id).orElse(null);
+    }
 }

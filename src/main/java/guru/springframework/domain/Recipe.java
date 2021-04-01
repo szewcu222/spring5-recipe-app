@@ -1,15 +1,18 @@
 package guru.springframework.domain;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
 
     @Id
@@ -54,4 +57,5 @@ public class Recipe {
         this.ingredients.add(ingredient);
 
     }
+
 }
