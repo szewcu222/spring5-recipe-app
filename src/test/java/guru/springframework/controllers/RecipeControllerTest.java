@@ -31,7 +31,8 @@ class RecipeControllerTest {
 
     @Test
     void getRecipeTest() throws Exception {
-        Recipe recipe = Recipe.builder().id(1L).build();
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())

@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
-@Builder
+// @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {

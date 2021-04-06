@@ -1,4 +1,4 @@
-package guru.springframework.commands;
+package guru.springframework.dtos;
 
 import guru.springframework.domain.Difficulty;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RecipeCommand {
+public class RecipeDTO {
     private Long id;
     private String description;
     private Integer prepTime;
@@ -20,8 +20,8 @@ public class RecipeCommand {
     private String source;
     private String url;
     private String directions;
-    private Set<IngredientCommand> ingredients = new HashSet<>();
+    private Set<IngredientDTO> ingredients = new HashSet<>();
     private Difficulty difficulty;
-    private NoteCommand notes;
-    private Set<CategoryCommand> categories = new HashSet<>();
+    private NoteDTO notes;
+    private Set<CategoryDTO> categories = new HashSet<>();
 }

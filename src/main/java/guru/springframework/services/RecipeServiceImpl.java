@@ -1,15 +1,13 @@
 package guru.springframework.services;
 
+import guru.springframework.dtos.RecipeDTO;
 import guru.springframework.domain.Difficulty;
-import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
-import guru.springframework.repositories.IngredientRepository;
+import guru.springframework.mappers.CycleAvoidingMappingContext;
+import guru.springframework.mappers.RecipeMapper;
 import guru.springframework.repositories.RecipeRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.*;
 
 @Service
@@ -45,5 +43,14 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public Recipe getRecipeById(Long id) {
         return recipeRepository.findRecipeById(id).orElse(null);
+    }
+
+
+    public Set<RecipeDTO> getRecipesDTO() {
+        Set<Recipe> recipes = this.getRecipes();
+        Set<RecipeDTO> recipesDTO = new HashSet<>();
+        recipes.forEach(r -> recipesDTO.add(RecipeMapper.MAPPER.recipeToDto(r, new CycleAvoidingMappingContext())));
+
+        return recipesDTO;
     }
 }
