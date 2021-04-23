@@ -1,13 +1,12 @@
 package guru.springframework.controllers;
 
 import guru.springframework.domain.Recipe;
+import guru.springframework.dtos.RecipeDTO;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -26,4 +25,30 @@ public class RecipeController {
         model.addAttribute("recipe", recipe);
         return "recipe/show";
     }
+
+    @GetMapping("/new")
+    public String newRecipe(Model model) {
+        model.addAttribute("recipe", new RecipeDTO());
+        return "recipe/recipeform";
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe", recipeService.getRecipeDTOByID(Long.valueOf(id)));
+        return "recipe/recipeform";
+    }
+
+    @PostMapping
+    public String saveOrUpdateRecipe(@ModelAttribute RecipeDTO recipeDto) {
+        RecipeDTO savedRecipeDto = recipeService.saveRecipeDto(recipeDto);
+
+        return "redirect:" + savedRecipeDto.getId() + "/show";
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteRecipeId(@PathVariable String id) {
+        recipeService.deleteRecipeById(Long.valueOf(id));
+        return "redirect:/";
+    }
+
 }

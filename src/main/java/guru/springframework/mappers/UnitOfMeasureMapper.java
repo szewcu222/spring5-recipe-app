@@ -7,7 +7,7 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UnitOfMeasureMapper {
     UnitOfMeasureMapper MAPPER = Mappers.getMapper(UnitOfMeasureMapper.class);
 

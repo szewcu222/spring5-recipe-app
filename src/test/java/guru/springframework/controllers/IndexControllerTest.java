@@ -1,6 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.domain.Recipe;
+import guru.springframework.dtos.RecipeDTO;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.services.RecipeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,9 +52,9 @@ class IndexControllerTest {
     @Test
     void getIndexPage() {
         //given
-        Set<Recipe> recipes = new HashSet<Recipe>(){{add(new Recipe()); add(new Recipe(){{setId(2L);}});}};
+        Set<RecipeDTO> recipes = new HashSet<RecipeDTO>(){{add(new RecipeDTO()); add(new RecipeDTO(){{setId(2L);}});}};
 
-        when(recipeService.getRecipes()).thenReturn(recipes);
+        when(recipeService.getRecipesDTO()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -62,7 +63,7 @@ class IndexControllerTest {
 
         //then
         assertEquals("index", viewName);
-        verify(recipeService, times(1)).getRecipes();
+        verify(recipeService, times(1)).getRecipesDTO();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertEquals(2, setInController.size());

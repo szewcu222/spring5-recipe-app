@@ -15,4 +15,8 @@ public class IngredientDTO {
     private BigDecimal amount;
     private UnitOfMeasureDTO uom;
     private RecipeDTO recipe;
+
+    public Long getRecipeId() {
+        return this.recipe.getId();
+    }
 }

@@ -22,6 +22,6 @@ public class RecipeDTO {
     private String directions;
     private Set<IngredientDTO> ingredients = new HashSet<>();
     private Difficulty difficulty;
-    private NoteDTO notes;
+    private NoteDTO note;
     private Set<CategoryDTO> categories = new HashSet<>();
 }

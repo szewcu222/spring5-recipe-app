@@ -7,6 +7,11 @@ import java.util.Set;
 
 public interface RecipeService {
     Set<Recipe> getRecipes();
-    Recipe getRecipeById(Long id);
     Set<RecipeDTO> getRecipesDTO();
+    Recipe getRecipeById(Long id);
+    RecipeDTO getRecipeDTOByID(Long id);
+    Recipe saveRecipe(Recipe recipe);
+    RecipeDTO saveRecipeDto(RecipeDTO recipeDto);
+
+    void deleteRecipeById(Long id);
 }

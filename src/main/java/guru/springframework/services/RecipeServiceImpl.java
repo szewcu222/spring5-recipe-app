@@ -6,15 +6,18 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.mappers.CycleAvoidingMappingContext;
 import guru.springframework.mappers.RecipeMapper;
 import guru.springframework.repositories.RecipeRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
     private final RecipeRepository recipeRepository;
-//    private final IngredientRepository ingredientRepository;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
@@ -24,28 +27,18 @@ public class RecipeServiceImpl implements RecipeService{
     public Set<Recipe> getRecipes() {
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
-        // Recipe recipe = recipes.stream().findFirst().get();
-        // Set<Ingredient> ingredients = ingredientRepository.findIngredientsByRecipe_Id(recipe.getId());
+//        Set<Recipe> recByDiffAndCookTime = recipeRepository.findRecipesByDifficultyOrCookTime(Difficulty.EASY, 0);
+//
+//        System.out.println("findRecipeByNoteIn");
+//        Set<Recipe> allByCategoriesId = recipeRepository.findByCategoriesId(1L);
+//        Set<Recipe> allByIgredientId = recipeRepository.findRecipesByIngredientsId(1L);
 
-        Set<Recipe> recByDiffAndCookTime = recipeRepository.findRecipesByDifficultyOrCookTime(Difficulty.EASY, 0);
-
-        // Set<Recipe> recByIngredients = recipeRepository.findRecipesByIngredients(ingredients);
-
-        System.out.println("findRecipeByNoteIn");
-        // Recipe recByNoteId = recipeRepository.findRecipeByNoteIn(Collections.singletonList(recipe.getNote()));
-
-        Set<Recipe> allByCategoriesId = recipeRepository.findByCategoriesId(1L);
-
-        Set<Recipe> allByIgredientId = recipeRepository.findRecipesByIngredientsId(1L);
+        log.info("---------------------------");
+        log.debug("getRecipes------------------------------");
         return recipes;
     }
 
     @Override
-    public Recipe getRecipeById(Long id) {
-        return recipeRepository.findRecipeById(id).orElse(null);
-    }
-
-
     public Set<RecipeDTO> getRecipesDTO() {
         Set<Recipe> recipes = this.getRecipes();
         Set<RecipeDTO> recipesDTO = new HashSet<>();
@@ -53,4 +46,36 @@ public class RecipeServiceImpl implements RecipeService{
 
         return recipesDTO;
     }
+    
+    @Override
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findRecipeById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public RecipeDTO getRecipeDTOByID(Long id) {
+        return RecipeMapper.MAPPER.recipeToDto(getRecipeById(id), new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public Recipe saveRecipe(Recipe recipe) {
+        return recipeRepository.save(recipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeDTO saveRecipeDto(RecipeDTO recipeDto) {
+        Recipe savedRecipe = saveRecipe(RecipeMapper.MAPPER.dtoToRecipe(recipeDto, new CycleAvoidingMappingContext()));
+        log.debug("Saved recipe: " + savedRecipe.getId());
+        return RecipeMapper.MAPPER.recipeToDto(savedRecipe, new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public void deleteRecipeById(Long id) {
+        recipeRepository.deleteById(id);
+    }
+
+
+
 }
