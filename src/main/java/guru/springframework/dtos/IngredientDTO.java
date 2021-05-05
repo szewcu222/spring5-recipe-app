@@ -11,12 +11,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class IngredientDTO {
     private Long id;
+    private Long recipeId;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasureDTO uom;
     private RecipeDTO recipe;
 
-    public Long getRecipeId() {
-        return this.recipe.getId();
-    }
+//    public Long getRecipeId() {
+//        return this.recipe.getId();
+//    }
 }

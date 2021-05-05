@@ -51,4 +51,8 @@ public class IngredientService {
         Ingredient savedIngredient = ingredientRepository.save(mapper.dtoToIngredient(ingredientDTO, new CycleAvoidingMappingContext()));
         return mapper.ingredientToDto(savedIngredient, new CycleAvoidingMappingContext());
     }
+
+    public void deleteIngredientById(Long ingredientId) {
+        ingredientRepository.deleteById(ingredientId);
+    }
 }

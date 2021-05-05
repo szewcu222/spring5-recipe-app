@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
-@RequestMapping("/recipe")
+@RequestMapping("/recipe/{recipeId}/ingredient")
 public class IngredientController {
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
@@ -31,7 +32,7 @@ public class IngredientController {
         this.uomService = uomService;
     }
 
-    @GetMapping("/{recipeId}/ingredients")
+    @GetMapping("/all")
     public String listOfIngredients(@PathVariable String recipeId, Model model) {
 
         RecipeDTO recipe = recipeService.getRecipeDTOByID(Long.valueOf(recipeId));
@@ -44,7 +45,7 @@ public class IngredientController {
         return "recipe/ingredient/list";
     }
 
-    @GetMapping("/{recipeId}/ingredientsRepo")
+    @GetMapping("/ingredientsRepo")
     public String listOfIngredientsRepo(@PathVariable String recipeId, Model model) {
         RecipeDTO recipe = new RecipeDTO();
         Set<IngredientDTO> ingredients = ingredientService.getIngredientsDTOByRecipeId(Long.valueOf(recipeId));
@@ -57,7 +58,7 @@ public class IngredientController {
 
     }
 
-    @GetMapping("/{recipeId}/ingredient/{ingredientId}/show")
+    @GetMapping("/{ingredientId}/show")
     public String showIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
         String ss;
         model.addAttribute("ingredient" , ingredientService.getIngredientDTOForRecipe(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
@@ -65,19 +66,39 @@ public class IngredientController {
         return "recipe/ingredient/show";
     }
 
-    @GetMapping("/{recipeId}/ingredient/{ingredientId}/update")
-    public String updateIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model ) {
+    @GetMapping("/{ingredientId}/update")
+    public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model ) {
         model.addAttribute("ingredient" , ingredientService.getIngredientDTOForRecipe(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
         model.addAttribute("uomList", uomService.getAllUoms());
         return "recipe/ingredient/ingredientform";
     }
 
-    @PostMapping("/{recipeId}/ingredient")
-    public String saveOrUpdateIngredient(@ModelAttribute IngredientDTO ingredientDTO) {
+    @GetMapping("/new")
+    public String newIngredient(@PathVariable String recipeId, Model model) {
+        RecipeDTO recipeDTO = recipeService.getRecipeDTOByID(Long.valueOf(recipeId));
+
+        IngredientDTO ingredient = new IngredientDTO();
+        ingredient.setRecipe(recipeDTO);
+        model.addAttribute("ingredient", ingredient);
+        model.addAttribute("uomList", uomService.getAllUoms());
+
+        return "recipe/ingredient/ingredientform";
+    }
+
+    @PostMapping()
+    public String saveOrUpdateIngredient(@ModelAttribute IngredientDTO ingredientDTO, @PathVariable String recipeId) {
         String ss = "";
+        ingredientDTO.setRecipe(recipeService.getRecipeDTOByID(Long.valueOf(recipeId)));
         IngredientDTO savedIngredientDto = ingredientService.saveIngredientDto(ingredientDTO);
 
-        return "redirect:/" + savedIngredientDto.getRecipeId() + "/ingredient/" + savedIngredientDto.getId() + "/show";
+        return "redirect:/recipe/" + savedIngredientDto.getRecipe().getId() + "/ingredient/" + savedIngredientDto.getId() + "/show";
+    }
+
+    @GetMapping("/{ingredientId}/delete")
+    public ModelAndView deleteIngredient(@PathVariable String recipeId, @PathVariable String ingredientId) {
+        ingredientService.deleteIngredientById(Long.valueOf(ingredientId));
+
+        return new ModelAndView("redirect:/recipe/" + recipeId + "/ingredient/all");
     }
 
 }

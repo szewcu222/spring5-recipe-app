@@ -9,7 +9,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-// @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {
@@ -23,7 +22,7 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
-//    @Column(columnDefinition = "text")
+
     @Lob
     private String directions;
 
