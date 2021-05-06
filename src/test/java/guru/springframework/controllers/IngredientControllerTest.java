@@ -7,6 +7,7 @@ import guru.springframework.services.RecipeServiceImpl;
 import guru.springframework.services.UOMService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,7 +47,7 @@ class IngredientControllerTest {
         //given recipe opject
         RecipeDTO recipe = new RecipeDTO();
         //when perform get, check if staus ok, view and attribute
-        mockMvc.perform(get("/recipe/1/ingredientsRepo"))
+        mockMvc.perform(get("/recipe/1/ingredient/ingredientsRepo"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"));
@@ -61,7 +62,7 @@ class IngredientControllerTest {
         RecipeDTO recipeDTO = new RecipeDTO();
         when(recipeService.getRecipeDTOByID(anyLong())).thenReturn(recipeDTO);
         //when  perform get on url. Expect status ok and view
-        mockMvc.perform(get("/recipe/1/ingredients"))
+        mockMvc.perform(get("/recipe/1/ingredient/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"));

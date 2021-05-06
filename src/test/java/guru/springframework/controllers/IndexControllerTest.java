@@ -69,7 +69,7 @@ class IndexControllerTest {
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertEquals(2, setInController.size());
 
-        assertEquals("5.1.10.RELEASE", SpringVersion.getVersion());
+//        assertEquals("5.1.10.RELEASE", SpringVersion.getVersion());
 
     }
 }
