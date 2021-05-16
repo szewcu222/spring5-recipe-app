@@ -20,6 +20,7 @@ public class RecipeDTO {
     private String source;
     private String url;
     private String directions;
+    private Byte[] image;
     private Set<IngredientDTO> ingredients = new HashSet<>();
     private Difficulty difficulty;
     private NoteDTO note;
